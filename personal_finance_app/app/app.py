@@ -21,6 +21,7 @@ def process_file():
         return "No file part in the request", 400
 
     file = request.files['file']
+    print(file)
 
     if file.filename == '':
         return "No file selected", 400
