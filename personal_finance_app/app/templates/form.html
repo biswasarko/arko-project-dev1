@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Data</title>
 </head>
 <body>
-$END$
+    <h1>Data Form</h1>
+
+    <form action="/process" method="POST">
+        <h3>Add New Row</h3>
+        {% for header in headers %}
+        <label>{{ header }}: </label>
+        <input type="text" name="{{ header }}"><br>
+        {% endfor %}
+        <button type="submit">Add Row</button>
+    </form>
+
+    <h3>Current Data</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                {% for header in headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for value in row.values() %}
+                <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Aggregation</h3>
+    <p>{{ aggregation_result }}</p>
+
+    <h3>Download Processed File</h3>
+    <a href="/download"><button>Download</button></a>
 </body>
 </html>

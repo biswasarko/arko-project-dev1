@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, send_file
 import pandas as pd
 import os
 from io import BytesIO
+from data_processing import prepare_data
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -9,6 +10,7 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 global_df = None
 file_path = None
+std_df = None
 
 @app.route('/')
 def upload_file():
@@ -33,7 +35,6 @@ def process_file():
         # load excel into a df
         global_df = pd.read_excel(file_path)
         headers = global_df.columns.tolist()
-
         return render_template('form.html', headers=headers, rows=global_df.to_dict(orient='records'))
 
     except Exception as e:
@@ -41,21 +42,24 @@ def process_file():
 
 @app.route('/process', methods=['POST'])
 def process_data():
-    global global_df, file_path
+    global global_df, file_path, std_df
     try:
         # Get the form data for a new row
-        new_row = {header: request.form.get(header) for header in global_df.columns}
-        global_df = global_df.append(new_row, ignore_index=True)
+        new_row = pd.DataFrame.from_dict({header: [request.form.get(header)] for header in global_df.columns})
+        print(new_row)
+        std_df = pd.concat([global_df, new_row], ignore_index=True)
 
         # Perform aggregation
-        row_count = len(global_df)
+        row_count = len(std_df)
         aggregation_result = f"Total rows: {row_count}"
 
-        # Save updated dataframe back to the file
-        global_df.to_excel(file_path, index=False)
+        df_int = prepare_data(std_df)
 
-        return render_template('form.html', headers=global_df.columns.tolist(),
-                               rows=global_df.to_dict(orient='records'), aggregation_result=aggregation_result)
+        # Save updated dataframe back to the file
+        # df_net.to_excel(file_path, index=False)
+
+        return render_template('form.html', headers=df_int.columns.tolist(),
+                               rows=df_int.to_dict(orient='records'), aggregation_result=aggregation_result)
     except Exception as e:
         return f"Error processing data: {str(e)}", 500
 
