@@ -12,10 +12,19 @@
         <h3>Add New Row</h3>
         {% for header in headers %}
         <label>{{ header }}: </label>
-        <input type="text" name="{{ header }}"><br>
+            {% if header == 'DATE' %}
+                <input type="date" name="{{ header }}"><br><br>
+            {% else %}
+                <input type="text" name="{{ header }}" value="0"><br><br>
+            {% endif %}
         {% endfor %}
         <button type="submit">Add Row</button>
     </form>
+
+    <script>
+        const today = new Date().toISOString();
+        document.querySelector('input[type="date"]').value = today;
+    </script>
 
     <h3>Current Data</h3>
     <table border="1">
