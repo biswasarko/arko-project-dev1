@@ -1,0 +1,71 @@
+{
+  "Repayment": {
+    "Loan Repayment": "Y",
+    "Credit Card Bills": "Y"
+  },
+  "Investment": {
+    "Mutual Funds": "N",
+    "Shares": "N",
+    "FD": "N",
+    "RD": "Y",
+    "PPF": "Y"
+  },
+  "Medical": {
+    "Appointment": "Y",
+    "Tests": "Y",
+    "Medicine": "Y",
+    "Essentials": "Y"
+  },
+  "Vehicle": {
+    "Car Fuel": "Y",
+    "Bike Fuel": "Y",
+    "Car Insurance": "Y",
+    "Car Washing": "N",
+    "Car Maintenance": "Y",
+    "Bike Insurance": "Y",
+    "Bike Washing": "N",
+    "Bike Maintenance": "Y",
+    "Accessories": "N",
+    "Toll": "Y"
+  },
+  "Shopping" : {
+    "Clothing": "N",
+    "Footwear": "N",
+    "Accessories": "N",
+    "Others": "N"
+  },
+  "Home": {
+    "Rent": "Y",
+    "Electricity": "Y",
+    "Mobile": "Y",
+    "Broadband": "Y",
+    "Maintenance": "Y",
+    "Maid": "Y",
+    "Electronics": "N",
+    "Decoration": "N",
+    "Furniture": "N",
+    "Repair Work": "Y",
+    "Kitchen Essentials": "Y",
+    "Toilet Essentials": "Y",
+    "Other Essentials": "Y"
+  },
+  "Travel": {
+    "Flight tickets": "N",
+    "Cab": "N",
+    "Self Drive": "N",
+    "Hotel": "N",
+    "Tips": "N"
+  },
+  "FnB": {
+    "Offline Groceries": "Y",
+    "Online Groceries": "Y",
+    "Online Food Order": "N",
+    "Restaurant/Cafe/Pub": "N"
+  },
+  "Recreation": {
+      "Cigarette": "N",
+      "Alcohol": "N",
+      "Essentials": "N",
+      "Greens": "N"
+    }
+}
