@@ -52,7 +52,8 @@
     "Kitchen Essentials": "Y",
     "Toilet Essentials": "Y",
     "Other Essentials": "Y",
-    "Gift": "N"
+    "Gift": "N",
+    "Gardening": "Y"
   },
   "Travel": {
     "Flight tickets": "N",
@@ -65,7 +66,8 @@
     "Offline Groceries": "Y",
     "Online Groceries": "Y",
     "Online Food Order": "N",
-    "Restaurant/Cafe/Pub": "N"
+    "Restaurant/Cafe/Pub": "N",
+    "Junk Food": "N"
   },
   "Recreation": {
       "Cigarette": "N",

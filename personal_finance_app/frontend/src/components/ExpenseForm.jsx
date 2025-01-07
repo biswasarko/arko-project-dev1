@@ -163,6 +163,7 @@ export default function ExpenseForm({ refreshData }) {
                         <MenuItem value="CASH">Cash</MenuItem>
                         <MenuItem value="AT">Account Transfer</MenuItem>
                         <MenuItem value="Fastag">Fastag</MenuItem>
+                        <MenuItem value="Cashback">Cashback</MenuItem>
                     </Select>
                     {/*<TextField label="Payment Method" name="Payment_Method" value={formData.Payment_Method} onChange={handleChange} />*/}
                     <Button type="submit" variant="contained" color="primary">Submit</Button>

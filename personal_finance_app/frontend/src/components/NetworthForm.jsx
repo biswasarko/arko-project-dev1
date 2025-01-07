@@ -1,43 +1,55 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {Box, Button, Grid, Stack, TextField, Typography} from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 
 export default function NetworthForm({ refreshData }) {
     const [formData, setFormData] = useState({});
     const [formSchema, setFormSchema] = useState({});
 
     useEffect(() => {
-        console.log('inside useeffect');
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:5000/get_headers');
-                console.log("response");
-                console.log(response);
+                const response = await axios.get("http://127.0.0.1:5000/get_headers");
                 const data = response.data;
-                console.log("data");
-                console.log(data);
                 setFormSchema(data);
+
+
+                const initialFormData = {};
+                data.fields.forEach((field) => {
+                    if (field.type === "date") {
+                        // Set default value for date fields to today's date
+                        initialFormData[field.name] = new Date().toISOString().split("T")[0];
+                    } else {
+                        initialFormData[field.name] = field.defaultValue;
+                    }
+                });
+                setFormData(initialFormData);
             } catch (error) {
-                console.error(error);
+                console.error("Error fetching form schema:", error);
             }
         };
         fetchData();
-
     }, []);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        console.log(name, value);
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        const data = { ...formData };
-        setFormData(data);
-        // await axios.post('http://127.0.0.1:5000/networth_submit', data);
-        // refreshData();
-        console.log('after submit');
-        // console.log({formSchema.map((field, index) => (index))});
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const data = { ...formData };
+            console.log("Submitting Data:", data);
+            await axios.post("http://127.0.0.1:5000/networthSubmit", data);
+            if (refreshData) refreshData();
+        } catch (error) {
+            console.error("Error submitting form:", error);
+        }
     };
 
     return (
@@ -49,36 +61,27 @@ export default function NetworthForm({ refreshData }) {
             <Typography variant="h4" gutterBottom>
                 Dynamic Form
             </Typography>
-            {/*<Typography component="h1" variant="h5" gutterBottom>*/}
-            {/*    {formSchema.fields.map((field, i) => (*/}
-            {/*        <TextField name={field.name} label={field.label} />*/}
-            {/*    ))}*/}
-            {/*</Typography>*/}
-            {/*{formSchema.fields.map((field) => (*/}
-            {/*    <Box key={field.name} sx={{ mb: 2 }}>*/}
-            {/*        {field.type === "number" || field.type === "text" || field.type === "date" ? (*/}
-            {/*            <TextField*/}
-            {/*                fullWidth*/}
-            {/*                label={field.label}*/}
-            {/*                name={field.name}*/}
-            {/*                type={field.type}*/}
-            {/*                required={field.required === "true"}*/}
-            {/*                defaultValue={field.defaultValue}*/}
-            {/*                // onChange={handleInputChange}*/}
-            {/*            />*/}
-            {/*        ) : null}*/}
-            {/*    </Box>*/}
-            {/*))}*/}
-
-            {/*<Grid container spacing={2}>*/}
-            {/*    {formSchema?.fields.map((field, index) => (*/}
-            {/*        index))};*/}
-            {/*</Grid>*/}
-
-
-            <Button type="submit" variant="contained" color="primary">
+            <Stack spacing={5}>
+                {formSchema && formSchema.fields ? (
+                    formSchema.fields.map((field, index) => (
+                        <Stack key={index} spacing={1}>
+                            <Typography variant="caption">{field.label}</Typography>
+                            <TextField
+                                id={field.name}
+                                name={field.name}
+                                type={field.type}
+                                value={formData[field.name] || ""}
+                                onChange={handleChange}
+                            />
+                        </Stack>
+                    ))
+                ) : (
+                    <Typography>Form schema not available</Typography>
+                )}
+            </Stack>
+            <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
                 Submit
             </Button>
         </Box>
     );
-};
+}
